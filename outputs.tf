@@ -2,8 +2,8 @@ output "vpc_id" {
   value = module.vpc.vpc_id
 }
 
-output "public_subnet_id" {
-  value = module.subnet_public.public_subnet_id
+output "public_subnets_ids" {
+  value = module.subnet_public.public_subnets_ids
 }
 
 output "igw_id" {

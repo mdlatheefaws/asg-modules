@@ -10,20 +10,20 @@ module "vpc" {
 module "subnet_public" {
   source             = "./modules/subnet_public"
   vpc_id             = module.vpc.vpc_id
-  public_subnet1_cidr = var.public_subnet1_cidr
-  public_subnet1_az  = var.public_subnet1_az
-  public_subnet2_cidr = var.public_subnet2_cidr
-  public_subnet2_az  = var.public_subnet2_az
+  Public_subnets_cidrs = var.Public_subnets_cidrs
+  public_subnets_azs = var.public_subnets_azs
+  #public_subnet2_cidr = var.public_subnet2_cidr
+  #public_subnet2_az  = var.public_subnet2_az
   project            = var.project
-  environment        = var.environment
+  environment        = var.environment  
 }
 
 # IGW + public RT + assoc
 module "igw" {
   source           = "./modules/igw"
   vpc_id           = module.vpc.vpc_id
-  public_subnet1_id = module.subnet_public.public_subnet1_id
-  public_subnet2_id = module.subnet_public.public_subnet2_id
+  public_subnet1_id = module.subnet_public.public_subnets_ids[0]  # first subnet
+  public_subnet2_id = module.subnet_public.public_subnets_ids[1]  # second subnet
   project          = var.project
   environment      = var.environment
 }
@@ -59,7 +59,7 @@ module "frontend_asg" {
   desired_capacity = 1
   force_delete     = true
   health_check_grace_period = 300
-  subnet_ids = [module.subnet_public.public_subnet_id]  # single subnet
+  subnet_ids = [module.subnet_public.public_subnets_ids[0]]  # single subnet
   tags = {
     Project = var.project
     Env     = var.environment
@@ -68,7 +68,8 @@ module "frontend_asg" {
 module "alb" {
   source = "./modules/alb"
   vpc_id            = module.vpc.vpc_id
-  public_subnet_ids = [module.subnet_public.public_subnet_id]  # list with single subnet
+  public_subnet_ids = module.subnet_public.public_subnets_ids #module.subnet_public.public_subnets_ids[*].id
+    # list with single subnet
   project           = var.project
   environment       = var.environment
 

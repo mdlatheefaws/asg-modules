@@ -18,24 +18,23 @@ variable "vpc_cidr" {
   default = "10.0.0.0/16"
 }
 
-variable "public_subnet1_cidr" {
-  type    = string
+# variable "public_subnet1_cidr" {
+#   type    = string
   
-}
-variable "public_subnet2_cidr" {
-  type    = string
+# }
+# variable "public_subnet2_cidr" {
+#   type    = string
   
-}
+# }
 
+variable "Public_subnets_cidrs" {
+    type = list(string)
+   }
 
-variable "public_subnet1_az" {
-  type    = string
-  default = "ap-south-1a"
-}
-variable "public_subnet2_az" {
-  type    = string
-  default = "ap-south-1b"
-}
+variable "public_subnets_azs" {
+  type    = list(string)
+  }
+
 
 # variable "ami_id" {
 #   type = string

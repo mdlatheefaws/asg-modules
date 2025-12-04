@@ -26,8 +26,8 @@ resource "aws_security_group" "alb_sg" {
 }
 
 # ALB
-resource "aws_lb" "this" {
-  name               = "${var.project}-${var.environment}-alb"
+resource "aws_lb" "ladsoft_alb" {
+  name               = substr("${var.project}-${var.environment}-alb", 0, 32)
   internal           = false
   load_balancer_type = "application"
   subnets            = var.public_subnet_ids
@@ -64,7 +64,7 @@ resource "aws_lb_target_group" "tg" {
 
 # Listener
 resource "aws_lb_listener" "http" {
-  load_balancer_arn = aws_lb.this.arn
+  load_balancer_arn = aws_lb.ladsoft_alb.arn
   port              = 80
   protocol          = "HTTP"
 

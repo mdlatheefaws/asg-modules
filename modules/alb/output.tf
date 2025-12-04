@@ -1,9 +1,9 @@
 output "alb_arn" {
-  value = aws_lb.this.arn
+  value = aws_lb.ladsoft_alb.arn
 }
 
 output "alb_dns" {
-  value = aws_lb.this.dns_name
+  value = aws_lb.ladsoft_alb.dns_name
 }
 
 output "target_group_arn" {
